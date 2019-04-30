@@ -29,9 +29,8 @@ deu_eng['summary'] = [s.translate(str.maketrans('', '', string.punctuation)) for
 deu_eng['text'] = [s.translate(str.maketrans('', '', string.punctuation)) for s in deu_eng['text']] 
 
 # convert text to lowercase 
-for i in range(len(deu_eng)): 
-    deu_eng[i,0] = deu_eng[i,0].lower() 
-    deu_eng[i,1] = deu_eng[i,1].lower()
+deu_eng['summary'] = deu_eng['summary'].str.lower()
+deu_eng['text'] = deu_eng['text'].str.lower()
     
 # empty lists 
 eng_l = [] 
