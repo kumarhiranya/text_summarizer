@@ -53,14 +53,14 @@ def tokenization(lines):
       return tokenizer
 
 # prepare english tokenizer 
-eng_tokenizer = tokenization(deu_eng[:, 0]) 
+eng_tokenizer = tokenization(deu_eng['summary']) 
 eng_vocab_size = len(eng_tokenizer.word_index) + 1 
 eng_length = 60 
 
 # print('English Vocabulary Size: %d' % eng_vocab_size)
 
 # prepare Deutch tokenizer 
-deu_tokenizer = tokenization(deu_eng[:, 1]) 
+deu_tokenizer = tokenization(deu_eng['text']) 
 deu_vocab_size = len(deu_tokenizer.word_index) + 1 
 deu_length = 350
 
@@ -81,12 +81,12 @@ from sklearn.model_selection import train_test_split
 train, test = train_test_split(deu_eng,test_size=0.2,random_state= 12)
 
 # prepare training data 
-trainX = encode_sequences(deu_tokenizer, deu_length, train[:, 1]) 
-trainY = encode_sequences(eng_tokenizer, eng_length, train[:, 0]) 
+trainX = encode_sequences(deu_tokenizer, deu_length, train['text']) 
+trainY = encode_sequences(eng_tokenizer, eng_length, train['summary']) 
 
 # prepare validation data 
-testX = encode_sequences(deu_tokenizer, deu_length, test[:, 1]) 
-testY = encode_sequences(eng_tokenizer, eng_length, test[:, 0])
+testX = encode_sequences(deu_tokenizer, deu_length, test['text']) 
+testY = encode_sequences(eng_tokenizer, eng_length, test['summary'])
 
 # build NMT model 
 def build_model(in_vocab,out_vocab, in_timesteps,out_timesteps,n):   
