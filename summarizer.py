@@ -23,7 +23,6 @@ pd.set_option('display.max_colwidth', 200)
 deu_eng = pd.read_excel("data/news_data_kaggle.xlsx")
 deu_eng.dropna(inplace=True)
 
-
 # Remove punctuation 
 deu_eng['summary'] = [s.translate(str.maketrans('', '', string.punctuation)) for s in deu_eng['summary']] 
 deu_eng['text'] = [s.translate(str.maketrans('', '', string.punctuation)) for s in deu_eng['text']] 
@@ -37,16 +36,15 @@ eng_l = []
 deu_l = [] 
 
 # populate the lists with sentence lengths 
-for i in deu_eng[:,0]: 
+for i in deu_eng['summary']: 
       eng_l.append(len(i.split())) 
 
-for i in deu_eng[:,1]: 
+for i in deu_eng['text']: 
       deu_l.append(len(i.split())) 
 
 length_df = pd.DataFrame({'eng':eng_l, 'deu':deu_l})
-length_df.hist(bins = 30)
+length_df.hist(bins = 100)
 plt.show()
-
 
 # function to build a tokenizer 
 def tokenization(lines): 
@@ -57,25 +55,25 @@ def tokenization(lines):
 # prepare english tokenizer 
 eng_tokenizer = tokenization(deu_eng[:, 0]) 
 eng_vocab_size = len(eng_tokenizer.word_index) + 1 
-eng_length = 8 
+eng_length = 60 
 
 # print('English Vocabulary Size: %d' % eng_vocab_size)
 
 # prepare Deutch tokenizer 
 deu_tokenizer = tokenization(deu_eng[:, 1]) 
 deu_vocab_size = len(deu_tokenizer.word_index) + 1 
-deu_length = 8 
+deu_length = 350
 
 # print('Deutch Vocabulary Size: %d' % deu_vocab_size)
 
 
 # encode and pad sequences 
 def encode_sequences(tokenizer, length, lines):          
-         # integer encode sequences          
-         seq = tokenizer.texts_to_sequences(lines)          
-         # pad sequences with 0 values          
-         seq = pad_sequences(seq, maxlen=length, padding='post')           
-         return seq
+     # integer encode sequences          
+     seq = tokenizer.texts_to_sequences(lines)          
+     # pad sequences with 0 values          
+     seq = pad_sequences(seq, maxlen=length, padding='post')           
+     return seq
      
 from sklearn.model_selection import train_test_split 
 
